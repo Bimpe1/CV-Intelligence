@@ -31,8 +31,6 @@ def extract_skills(text):
 
     found_skills = []
 
-    text = text.lower()
-
     for skill in SKILLS:
 
         pattern = r'\b' + re.escape(skill) + r'\b'

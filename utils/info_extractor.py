@@ -1,5 +1,22 @@
 import re
 
+import re
+
+def extract_name(text):
+
+    lines = text.split("\n")
+
+    for line in lines[:10]:
+
+        line = line.strip()
+
+        if len(line.split()) >= 2 and len(line.split()) <= 4:
+
+            if not any(char.isdigit() for char in line):
+
+                return line
+
+    return "Not Found"
 
 def extract_email(text):
 
@@ -93,6 +110,7 @@ def extract_github(text):
 def extract_all_info(text):
 
     return {
+        "name": extract_name(text),
         "email": extract_email(text),
         "phone": extract_phone(text),
         "linkedin": extract_linkedin(text),

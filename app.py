@@ -16,6 +16,7 @@ if uploaded_file:
     text = extract_text_from_pdf(uploaded_file)
     info = extract_all_info(text)
     st.subheader("Candidate Information")
+    st.write("Name:", info["name"])
     st.write("Email:", info["email"])
     st.write("Phone:", info["phone"])
     st.write("LinkedIn:", info["linkedin"])
@@ -33,15 +34,17 @@ if uploaded_file:
         "Overall Score",
         f"{score}/100"
     )
-    st.subheader("Skills Found")
+    if score >= 80:
+        st.success("Strong Candidate")
+    elif score >= 60:
+        st.warning("Moderate Candidate")
+    else:
+        st.error("Needs Improvement")
 
+    st.subheader("Skills Found")
     for skill in skills:
         st.write("✅", skill)
         
-    st.subheader("Extracted Text")
-
-    st.text_area(
-        "",
-        text,
-        height=400
-    )
+    with st.expander("View Extracted CV Text"):
+        st.text_area("", text, height=400)
+  
