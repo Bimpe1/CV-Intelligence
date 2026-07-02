@@ -1,14 +1,23 @@
 from sentence_transformers import SentenceTransformer
 from sentence_transformers.util import cos_sim
+import streamlit as st
 
-model = SentenceTransformer(
-    "all-MiniLM-L6-v2"
-)
 
-def calculate_match_score(
-    cv_text,
-    job_text
-):
+@st.cache_resource
+def load_model():
+    """
+    Load the Sentence Transformer model only once.
+    """
+    return SentenceTransformer("all-MiniLM-L6-v2")
+
+
+model = load_model()
+
+
+def calculate_match_score(cv_text, job_description):
+    """
+    Compare CV and Job Description semantically.
+    """
 
     cv_embedding = model.encode(
         cv_text,
@@ -16,7 +25,7 @@ def calculate_match_score(
     )
 
     job_embedding = model.encode(
-        job_text,
+        job_description,
         convert_to_tensor=True
     )
 
@@ -25,7 +34,4 @@ def calculate_match_score(
         job_embedding
     )
 
-    return round(
-        float(similarity[0][0]) * 100,
-        2
-    )
+    return round(float(similarity[0][0]) * 100, 2)
